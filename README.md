@@ -1,10 +1,5 @@
 One-time setup
 ```sh
-cd /path/to/t3code
-# Ensure origin is YOUR fork
-git remote -v
-# origin  https://github.com/tkuhemiya/t3code.git
-# Create your integration branch from current main
 git checkout main
 git pull origin main
 git checkout -b fork/themiya
@@ -27,17 +22,14 @@ git push -u origin themiya/pwa-install
 git checkout main
 git fetch https://github.com/pingdotgg/t3code.git main
 git merge FETCH_HEAD
-# or, if you want main to exactly match OG:
-# git reset --hard FETCH_HEAD
-git push origin main
 # 2. Rebase your integration branch on top
 git checkout fork/themiya
 git rebase main
 # 3. If fork/themiya was already pushed, update remote
 git push --force-with-lease origin fork/themiya
 ```
-on conflict
 
+on conflict
 ```sh
 # fix files, then:
 git add <fixed-files>
