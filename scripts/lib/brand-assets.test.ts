@@ -34,11 +34,8 @@ describe("brand-assets", () => {
     ]);
   });
 
-  it("maps server build web assets to development icons", () => {
-    expect(DEVELOPMENT_ICON_OVERRIDES[0]).toEqual({
-      sourceRelativePath: BRAND_ASSET_PATHS.developmentWebFaviconIco,
-      targetRelativePath: "dist/client/favicon.ico",
-    });
+  it("maps server build web assets to production icons", () => {
+    expect(DEVELOPMENT_ICON_OVERRIDES).toEqual(PUBLISH_ICON_OVERRIDES);
   });
 
   it("can target hosted web dist directly", () => {

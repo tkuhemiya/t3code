@@ -99,6 +99,7 @@ export function resolveWebIconOverrides(
   ];
 }
 
-export const DEVELOPMENT_ICON_OVERRIDES = resolveWebIconOverrides("development", "dist/client");
+// Source builds should use the official release icons (not blueprint dev marks).
+export const DEVELOPMENT_ICON_OVERRIDES = resolveWebIconOverrides("production", "dist/client");
 
 export const PUBLISH_ICON_OVERRIDES = resolveWebIconOverrides("production", "dist/client");
