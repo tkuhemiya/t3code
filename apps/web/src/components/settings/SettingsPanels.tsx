@@ -1,4 +1,4 @@
-import { ArchiveIcon, ArchiveX, LoaderIcon, PlusIcon, RefreshCwIcon } from "lucide-react";
+import { ArchiveIcon, ArchiveX, DownloadIcon, LoaderIcon, PlusIcon, RefreshCwIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useAtomValue } from "@effect/atom-react";
@@ -37,6 +37,7 @@ import { TraitsPicker } from "../chat/TraitsPicker";
 import { isElectron } from "../../env";
 import { buildHostedChannelSelectionUrl, type HostedAppChannel } from "../../hostedPairing";
 import { useTheme } from "../../hooks/useTheme";
+import { useWebAppInstall } from "../../hooks/useWebAppInstall";
 import { usePrimarySettings, useUpdatePrimarySettings } from "../../hooks/useSettings";
 import { useThreadActions } from "../../hooks/useThreadActions";
 import { useDesktopUpdateState } from "../../state/desktopUpdate";
@@ -478,6 +479,7 @@ export function useSettingsRestore(onRestored?: () => void) {
 
 export function GeneralSettingsPanel() {
   const { theme, setTheme } = useTheme();
+  const webAppInstall = useWebAppInstall();
   const settings = usePrimarySettings();
   const updateSettings = useUpdatePrimarySettings();
   const observability = useAtomValue(primaryServerObservabilityAtom);
@@ -548,6 +550,27 @@ export function GeneralSettingsPanel() {
             </Select>
           }
         />
+
+        {webAppInstall.isAvailable ? (
+          <SettingsRow
+            title="Install app"
+            description={
+              webAppInstall.showIosInstructions
+                ? "Add T3 Code to your home screen from Safari's Share menu."
+                : "Install T3 Code as a standalone app on this device."
+            }
+            control={
+              webAppInstall.canInstall ? (
+                <Button type="button" variant="outline" onClick={() => void webAppInstall.install()}>
+                  <DownloadIcon className="size-4" />
+                  Install
+                </Button>
+              ) : (
+                <p className="text-sm text-muted-foreground">Share, then Add to Home Screen</p>
+              )
+            }
+          />
+        ) : null}
 
         <SettingsRow
           title="Time format"
