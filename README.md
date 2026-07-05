@@ -1,90 +1,54 @@
-# T3 Code
-
-T3 Code is a minimal web GUI for coding agents (currently Codex, Claude, Cursor, and OpenCode, more coming soon).
-
-## Installation
-
-> [!WARNING]
-> T3 Code currently supports Codex, Claude, Cursor, and OpenCode.
-> Install and authenticate at least one provider before use:
->
-> - Codex: install [Codex CLI](https://developers.openai.com/codex/cli) and run `codex login`
-> - Claude: install [Claude Code](https://claude.com/product/claude-code) and run `claude auth login`
-> - Cursor: install [Cursor CLI](https://cursor.com/cli) and run `cursor-agent login`
-> - OpenCode: install [OpenCode](https://opencode.ai) and run `opencode auth login`
-
-### Run without installing
-
-```bash
-npx t3@latest
+One-time setup
+```sh
+cd /path/to/t3code
+# Ensure origin is YOUR fork
+git remote -v
+# origin  https://github.com/tkuhemiya/t3code.git
+# Create your integration branch from current main
+git checkout main
+git pull origin main
+git checkout -b fork/themiya
+git push -u origin fork/themiya
 ```
 
-Tip: Use `npx t3@latest --help` for the full CLI reference.
-
-### Desktop app
-
-Install the latest version of the desktop app from [GitHub Releases](https://github.com/pingdotgg/t3code/releases), or from your favorite package registry:
-
-#### Windows (`winget`)
-
-```bash
-winget install T3Tools.T3Code
+# Start a Feat
+```sh
+git fetch origin
+git checkout fork/themiya
+git pull origin fork/themiya
+git checkout -b themiya/pwa-install
+# ... work, commit ...
+git push -u origin themiya/pwa-install
 ```
 
-#### macOS (Homebrew)
+# Sync original repo → main → rebase fork/themiya
+```sh
+# 1. Update main from OG
+git checkout main
+git fetch https://github.com/pingdotgg/t3code.git main
+git merge FETCH_HEAD
+# or, if you want main to exactly match OG:
+# git reset --hard FETCH_HEAD
+git push origin main
+# 2. Rebase your integration branch on top
+git checkout fork/themiya
+git rebase main
+# 3. If fork/themiya was already pushed, update remote
+git push --force-with-lease origin fork/themiya
+```
+on conflict
 
-```bash
-brew install --cask t3-code
+```sh
+# fix files, then:
+git add <fixed-files>
+git rebase --continue
+# or abort:
+git rebase --abort
 ```
 
-#### Arch Linux (AUR)
-
-```bash
-yay -S t3code-bin
+After rebasing fork/themiya, update any open feature branches:
+```sh
+git checkout themiya/some-feature
+git rebase fork/themiya
+git push --force-with-lease origin themiya/some-feature
 ```
-
-## Some notes
-
-We are very very early in this project. Expect bugs.
-
-We are not accepting contributions yet.
-
-There's no public docs site yet, checkout the miscellaneous markdown files in [docs](./docs).
-
-## Documentation
-
-- [Getting started](./docs/getting-started/quick-start.md)
-- [Architecture overview](./docs/architecture/overview.md)
-- [Provider guides](./docs/providers/codex.md)
-- [Operations](./docs/operations/ci.md)
-- [Reference](./docs/reference/encyclopedia.md)
-
-## If you REALLY want to contribute still.... read this first
-
-### Install `vp`
-
-T3 Code uses Vite+ so you'll need to install the global `vp` command-line tool.
-
-#### macOS / Linux
-
-```bash
-curl -fsSL https://vite.plus | bash
-```
-
-#### Windows
-
-```bash
-irm https://vite.plus/ps1 | iex
-```
-
-Checkout their getting started guide for more information: https://viteplus.dev/guide/
-
-### Install dependencies
-
-```bash
-vp i
-```
-
-Read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening an issue or PR.
-
-Need support? Join the [Discord](https://discord.gg/jn4EGJjrvv).
